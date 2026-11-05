@@ -1,0 +1,5 @@
+.cmux-agent
+.DS_Store
+__pycache__/
+# raw Fusion export; regenerate and regroup with tools/regroup_3mf.py
+print/*_fusion.3mf

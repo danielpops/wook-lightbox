@@ -1,0 +1,10 @@
+{
+  "autodeskProduct": "Fusion",
+  "type": "script",
+  "author": "Daniel Popescu",
+  "description": {
+    "": "Rebuilds the Wook lightbox from scratch (wipes the active design's timeline)"
+  },
+  "supportedOS": "windows|mac",
+  "editEnabled": true
+}
