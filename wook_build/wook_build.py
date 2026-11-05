@@ -5,7 +5,7 @@
 #
 # Phases (run in this order; split up so each MCP call stays short):
 #   phase_body()        W / oo / K body walls, dovetails, wire + power holes, pole collar + thread, snap grooves, pry slots
-#   phase_caps(True)    front caps: translucent face + black lip + skirt with snap bumps
+#   phase_caps(True)    front caps: black lip + translucent face + black skirt with snap bumps
 #   phase_back()        fixed translucent back faces + full-depth black o window tubes (part of the body print)
 #   phase_finish()      appearances (black / translucent white), health check
 #   phase_check()       read-only: fit, snap, stop, dovetail, hole and overhang checks
@@ -467,8 +467,9 @@ def phase_caps(front):
             axis, pts, a0, a1 = snap_geom(bx, by, nx, ny, front, False)
             bumps.append(prism(comp, axis, pts, a0, a1, "%s snap %d" % (tag, i)))
         combine(comp, sk_, bumps, adsk.fusion.FeatureOperations.JoinFeatureOperation)
-        combine(comp, face, [sk_], adsk.fusion.FeatureOperations.JoinFeatureOperation)
-        face.name = tag + " cap"; lip.name = tag + " lip"
+        # skirt stays a separate black body: it's hidden behind the wall, and keeping it out of the
+        # translucent filament means a slow speed limit on that filament only slows the 5 face layers
+        face.name = tag + " face"; sk_.name = tag + " skirt"; lip.name = tag + " lip"
     print("phase_caps(%s) ok:" % label, [b.name for b in comp.bRepBodies])
 
 def phase_back():
@@ -497,7 +498,7 @@ def phase_finish():
     white = ap('Plastic - Translucent Matte (White)'); black = ap('Plastic - Matte (Black)')
     for o in design.rootComponent.occurrences:
         for b in o.component.bRepBodies:
-            b.appearance = white if (b.name.endswith(" cap") or b.name.endswith(" back face")) else black
+            b.appearance = white if b.name.endswith(" face") else black      # only the faces are translucent
     tl = design.timeline
     bad = [(tl.item(i).name, tl.item(i).errorOrWarningMessage) for i in range(tl.count) if tl.item(i).healthState != adsk.fusion.FeatureHealthStates.HealthyFeatureHealthState]
     print("phase_finish ok, timeline", tl.count, "unhealthy:", bad)
@@ -516,7 +517,7 @@ def phase_check():
     y0 = min(b.boundingBox.minPoint.y for b in allb); y1 = max(b.boundingBox.maxPoint.y for b in allb)
     print("overall %.1f x %.1f x %.1f mm" % ((x1-x0)*10, (y1-y0)*10, (z1-z0)*10))
     zr = lambda b: "%.2f..%.2f" % (b.boundingBox.minPoint.z*10, b.boundingBox.maxPoint.z*10)
-    print("z mm: W %s | W back face %s | oo window o1 %s | Front W lip %s | Front W cap %s" % (zr(body_named(bodyC, "W")), zr(body_named(bodyC, "W back face")), zr(body_named(bodyC, "oo window o1")), zr(body_named(frontC, "Front W lip")), zr(body_named(frontC, "Front W cap"))))
+    print("z mm: W %s | W back face %s | oo window o1 %s | Front W lip %s | Front W face %s" % (zr(body_named(bodyC, "W")), zr(body_named(bodyC, "W back face")), zr(body_named(bodyC, "oo window o1")), zr(body_named(frontC, "Front W lip")), zr(body_named(frontC, "Front W face"))))
     coll = adsk.core.ObjectCollection.create()
     for b in allb: coll.add(b)
     res = design.analyzeInterference(design.createInterferenceInput(coll))
@@ -531,13 +532,13 @@ def phase_check():
         return x.volume * 1000 if x.lumps.count else 0.0
     part = {"W": "W", "o1": "oo", "o2": "oo", "k": "K"}
     for name in ("W", "o1", "o2", "k"):
-        cap = body_named(frontC, "Front %s cap" % name); lip = body_named(frontC, "Front %s lip" % name)
+        cap = body_named(frontC, "Front %s skirt" % name); lip = body_named(frontC, "Front %s lip" % name)
         tgt = body_named(bodyC, part[name])
         print("Front %-3s seated %.2f mm3 | pulled out 1 mm %.2f (snap >0) | lip pushed in 0.5 mm %.2f (stop >0) | shifted 0.15 mm sideways %.2f (>0 = fit tighter than 0.15)" % (
             name, overlap(cap, tgt), overlap(cap, tgt, dz=1.0), overlap(lip, tgt, dz=-0.5), overlap(cap, tgt, dy=0.15)))
     for name in ("o1", "o2"):
-        cap = body_named(frontC, "Front %s cap" % name); tube = body_named(bodyC, "oo window " + name)
-        print("Front %s cap vs window tube: seated %.2f, shifted 0.15 mm %.2f" % (name, overlap(cap, tube), overlap(cap, tube, dy=0.15)))
+        cap = body_named(frontC, "Front %s face" % name); tube = body_named(bodyC, "oo window " + name)
+        print("Front %s face vs window tube: seated %.2f, shifted 0.15 mm %.2f" % (name, overlap(cap, tube), overlap(cap, tube, dy=0.15)))
     oo = body_named(bodyC, "oo")
     for nm, sx in (("W", -1.0), ("K", 1.0)):
         p_ = body_named(bodyC, nm)

@@ -26,7 +26,7 @@ The sign is too wide for any print bed, so it's split into three body pieces tha
 | Object in Bambu | What it is | Footprint |
 |---|---|---|
 | **W Body** | black W walls + translucent back face, printed as one multi-material piece | 171 × 142 mm |
-| **W Cap** | black lip + translucent front face | 163 × 142 mm |
+| **W Cap** | black lip + translucent front face + black skirt | 163 × 142 mm |
 | **OO Body** | both o's in one piece: walls, back faces, black window tubes, pole collar | 203 × 124 mm |
 | **OO Cap** | both o front caps | 2 × 102 × 102 mm |
 | **K Body** | black K walls + translucent back face | 124 × 142 mm |
@@ -37,7 +37,7 @@ Everything fits on the H2D bed (350 × 320 mm). It would also fit any 256 mm Bam
 ### How it goes together
 
 - **Dovetails.** The W and the K each have a vertical dovetail tail that drops straight down into a socket in the oo. Gravity holds them in, and they can't pull apart sideways. The oo carries the weight because the pole screws into it. Fit clearance is 0.2 mm per side.
-- **Front caps snap in.** Each cap is a translucent face with a short skirt that slides into the letter. A 1.5 mm black lip sits on top of the wall's rim. The lip is exactly the shape of the wall, so from the front it reads as the black border. It also stops the cap from being pushed in too far. Small 0.5 mm bumps on the skirt click into grooves inside the wall. Fit clearance is 0.1 mm per side.
+- **Front caps snap in.** Each cap is a translucent face with a short black skirt underneath that slides into the letter. The skirt is black because it's hidden behind the wall anyway, and it keeps the translucent filament limited to the faces (see Printing). A 1.5 mm black lip sits on top of the wall's rim. The lip is exactly the shape of the wall, so from the front it reads as the black border. It also stops the cap from being pushed in too far. Small 0.5 mm bumps on the skirt click into grooves inside the wall. Fit clearance is 0.1 mm per side.
 - **Removing a cap.** Each letter has a small 8 × 1.5 mm pry slot on its bottom edge, right under the lip. Use a fingernail or a flat screwdriver.
 - **The back isn't removable.** The back faces are printed fused to the body (multi-material), so only the front opens. That's deliberate: one opening is enough to get at the LEDs.
 - **o windows.** The square holes in the o's are framed by black tubes that run the full depth of the oo. The front o caps have a matching opening that fits around them.
@@ -75,6 +75,7 @@ Then double-click **Pole thread** in the timeline to choose a different standard
 Settings I used: 0.3 mm layers. The black lips and translucent faces are both 1.5 mm, exactly 5 layers, so the color change lands on a layer boundary.
 
 1. Open `print/Wook_Lightbox_19in.3mf`. If Bambu asks, map the two colors to your filaments: `#191919` black and `#F6F6F3` translucent white.
+   - **Slow faces for clarity.** The translucent filament is used *only* for the 1.5 mm faces (front and back). So instead of modifiers, set a low **Max volumetric speed** on the translucent filament preset and save it as a custom preset. Every face prints slowly and everything else stays at full speed. Flow = layer height × line width × speed, so at 0.3 mm layers and 0.42 mm lines: 10 mm/s = 1.26 mm³/s, 20 mm/s = 2.52 mm³/s, 30 mm/s = 3.78 mm³/s. The stock Bambu PETG Translucent profile is 6 mm³/s (about 48 mm/s). On the body prints, the first 5 layers mix both colors, so minimum layer time can stretch those whole layers a little.
 2. It loads assembled, so press **A** (Arrange) or spread it across plates.
 3. **Body pieces:** leave them back face down, as imported. The translucent back face prints first and the black walls build on top.
 4. **Caps:** flip them face down (lip on the bed).
@@ -173,6 +174,7 @@ Roughly in order:
 7. **Cap retention.** Added the black lip, snap bumps and pry slots.
 8. **Fixed back.** Made the back fixed (fused to the body), tightened the cap fit to 0.1 mm after a test print, and enlarged the holes to 14 mm.
 9. **Socket blocks.** Shrunk them so they don't run the full depth and shadow the LEDs.
+10. **Black skirts.** Made the cap skirts black so the only translucent material is the faces. A slow speed limit on that filament then only slows the visible layers.
 
 ## Open items / ideas
 

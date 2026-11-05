@@ -9,11 +9,11 @@ import re, sys, uuid, zipfile
 
 GROUPS = [
     ("W Body",  ["W", "W back face"]),
-    ("W Cap",   ["Front W lip", "Front W cap"]),
+    ("W Cap",   ["Front W lip", "Front W face", "Front W skirt"]),
     ("OO Body", ["oo", "o1 back face", "o2 back face", "oo window o1", "oo window o2"]),
-    ("OO Cap",  ["Front o1 lip", "Front o1 cap", "Front o2 lip", "Front o2 cap"]),
+    ("OO Cap",  ["Front o1 lip", "Front o1 face", "Front o1 skirt", "Front o2 lip", "Front o2 face", "Front o2 skirt"]),
     ("K Body",  ["K", "k back face"]),
-    ("K Cap",   ["Front k lip", "Front k cap"]),
+    ("K Cap",   ["Front k lip", "Front k face", "Front k skirt"]),
 ]
 UNIT_MM = {"micron": 0.001, "millimeter": 1.0, "centimeter": 10.0, "inch": 25.4, "foot": 304.8, "meter": 1000.0}
 
