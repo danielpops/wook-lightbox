@@ -36,7 +36,7 @@ Everything fits on the H2D bed (350 × 320 mm). It would also fit any 256 mm Bam
 
 ### How it goes together
 
-- **Dovetails.** The W and the K each have a vertical dovetail tail that drops straight down into a socket in the oo. Gravity holds them in, and they can't pull apart sideways. The oo carries the weight because the pole screws into it. Fit clearance is 0.2 mm per side.
+- **Dovetails.** The W and the K each have a vertical dovetail tail that drops straight down into a socket in the oo. Gravity holds them in, and they can't pull apart sideways. The oo carries the weight because the pole screws into it. Fit clearance is 0.4 mm per side (0.2 mm was too tight to assemble on the first print). Because the dovetail flanks are only about 15° off parallel, that clearance allows about 1.5 mm of side-to-side play before the joint locks.
 - **Front caps snap in.** Each cap is a translucent face with a short black skirt underneath that slides into the letter. The skirt is black because it's hidden behind the wall anyway, and it keeps the translucent filament limited to the faces (see Printing). A 1.5 mm black lip sits on top of the wall's rim. The lip is exactly the shape of the wall, so from the front it reads as the black border. It also stops the cap from being pushed in too far. Small 0.5 mm bumps on the skirt click into grooves inside the wall. Fit clearance is 0.1 mm per side.
 - **Removing a cap.** Each letter has a small 8 × 1.5 mm pry slot on its bottom edge, right under the lip. Use a fingernail or a flat screwdriver.
 - **The back isn't removable.** The back faces are printed fused to the body (multi-material), so only the front opens. That's deliberate: one opening is enough to get at the LEDs.
@@ -86,6 +86,7 @@ Settings I used: 0.3 mm layers. The black lips and translucent faces are both 1.
 
 - **Cap clearance.** 0.2 mm per side was too loose on an early K test print, so it's now 0.1 mm. If 0.1 is too tight, change `CLEAR` in `wook_build.py` to 0.015 (cm, so 0.15 mm).
 - **Snap bumps.** `BUMP_H` = 0.5 mm is an unprinted guess. Tune it after the first cap.
+- **Dovetail clearance.** 0.2 mm per side was too tight to slide together (the support-side surfaces are rougher than the rest). It's now 0.4 mm (`DT_CLEAR`, in mm).
 
 ## How the model is built
 

@@ -37,7 +37,7 @@ ZC = D_MM / 2
 DT_DEPTH = 4.0 * S                 # how far the tail reaches into the o (mm)
 DT_NECK = 13.0                     # tail width (front-back, mm) at the joint
 DT_TIP = DT_NECK + 2 * 0.275 * DT_DEPTH   # ~15 deg flanks
-DT_CLEAR = 0.2
+DT_CLEAR = 0.4                     # per side; 0.2 was too tight to assemble on the first print
 DT_Y0 = 47.0                       # tail bottom / socket floor (mm), above the 14 mm wire hole
 BLK_Y0 = 42.0                      # socket block bottom (mm)
 BLK_WALL = 3.0                     # socket wall around the slot (mm)
@@ -542,7 +542,8 @@ def phase_check():
     oo = body_named(bodyC, "oo")
     for nm, sx in (("W", -1.0), ("K", 1.0)):
         p_ = body_named(bodyC, nm)
-        print("%s dovetail: drop-in +0/+20/+80 mm = %.3f/%.3f/%.3f ; sideways 1 mm = %.2f (>0 locked)" % (nm, overlap(p_, oo), overlap(p_, oo, dy=20), overlap(p_, oo, dy=80), overlap(p_, oo, dx=sx)))
+        slack = DT_CLEAR * DT_DEPTH / ((DT_TIP - DT_NECK) / 2)
+        print("%s dovetail: drop-in +0/+20/+80 mm = %.3f/%.3f/%.3f ; sideways play %.2f mm, pulled %.1f mm = %.2f (>0 locked)" % (nm, overlap(p_, oo), overlap(p_, oo, dy=20), overlap(p_, oo, dy=80), slack, slack + 0.5, overlap(p_, oo, dx=sx * (slack + 0.5))))
     hs = sorted(set((b.name, "x" if abs(abs(f.geometry.axis.x) - 1) < 1e-6 else "y", round(f.geometry.origin.x*10,1), round(f.geometry.origin.y*10,1), round(f.geometry.radius*20,1))
                     for b in bodyC.bRepBodies for f in b.faces if f.geometry.surfaceType == adsk.core.SurfaceTypes.CylinderSurfaceType and abs(f.geometry.radius - WIRE_R) < 1e-4))
     print("14 mm holes (part, axis, x, y, dia):", hs)
