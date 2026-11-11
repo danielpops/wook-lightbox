@@ -52,6 +52,7 @@ USER_PARAMS = [
     ("pole_thread_len", "20 mm", "Thread depth up into the collar"),
     ("collar_w", "%.1f mm" % (25.05 * S), "Pole collar width (left-right); depth always matches the sign"),
     ("collar_h", "pole_thread_len + 2 mm", "Pole collar height below the sign: thread depth + 2 mm solid top (minimum)"),
+    ("pole_thread_clear", "0.4 mm", "Print clearance on the pole thread, per side (radial). 0 = exact spec, which a broom handle could not start in"),
 ]
 THREAD = ("ACME Screw Threads", "0.7500", "2G")
 
@@ -336,6 +337,17 @@ def add_pole_mount(comp, oo):
     tin = tf.createInput(faces, tf.createThreadInfo(True, *THREAD))
     tin.isModeled = True; tin.isFullLength = True
     th = tf.add(tin); th.name = "Pole thread"
+    # Printed internal threads come out undersized; exact spec would not even start on a real broom handle.
+    # Grow the whole thread (flanks, root, and the crest = the hole wall, which isn't part of the thread feature) outward.
+    tfaces = list(th.faces)
+    toks = set(f.entityToken for f in tfaces)
+    minor_r = th.threadInfo.minorDiameter / 2
+    crest = [f for f in oo.faces if f.geometry.surfaceType == adsk.core.SurfaceTypes.CylinderSurfaceType and f.entityToken not in toks
+             and abs(f.geometry.radius - minor_r) < 0.02 and f.boundingBox.maxPoint.y < 0]
+    assert len(crest) == 1, "pole thread crest faces: %d" % len(crest)
+    ofs = comp.features.offsetFacesFeatures
+    oc = ofs.add(ofs.createInput(tfaces + crest, adsk.core.ValueInput.createByString("-pole_thread_clear")))
+    oc.name = "Pole thread clearance"
     return th
 
 def snap_geom(ex_, ey_, nx, ny, front, groove):

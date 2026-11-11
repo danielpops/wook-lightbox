@@ -58,6 +58,7 @@ Everything fits on the H2D bed (350 × 320 mm). It would also fit any 256 mm Bam
 - It holds a 3/4"-5 ACME female thread, 20 mm deep. That's the standard US broom handle thread, and the male end on a broomstick (or a printed pole) screws straight in.
 - The thread is a modeled Fusion Thread feature, so it's real geometry and prints as is.
 - The thread did NOT scale when the sign was scaled up, on purpose.
+- The thread is opened up by `pole_thread_clear` (0.4 mm per side) for printing. Printed at exact spec, a broom handle wouldn't even start.
 
 **Changing the pole thread.** In Fusion, Modify > Change Parameters:
 
@@ -67,6 +68,7 @@ Everything fits on the H2D bed (350 × 320 mm). It would also fit any 256 mm Bam
 | `pole_thread_len` | 20 mm | How deep the thread goes. |
 | `collar_h` | `pole_thread_len + 2 mm` | Collar height. Follows the thread automatically. |
 | `collar_w` | 51.0 mm | Collar width. Could come down to about 30 mm for a 3/4" thread. |
+| `pole_thread_clear` | 0.4 mm | Print clearance on the thread, per side. Moves the flanks, root and crest outward. 0 = exact spec. |
 
 Then double-click **Pole thread** in the timeline to choose a different standard (ISO metric, trapezoidal, other ACME sizes, pipe...). I tested an M20×2.5 swap and it rebuilt cleanly. The collar is only as deep as the sign (52.9 mm), so a thread wider than about 45 mm won't fit.
 
@@ -87,6 +89,7 @@ Settings I used: 0.3 mm layers. The black lips and translucent faces are both 1.
 - **Cap clearance.** 0.2 mm per side was too loose on an early K test print, so it's now 0.1 mm. If 0.1 is too tight, change `CLEAR` in `wook_build.py` to 0.015 (cm, so 0.15 mm).
 - **Snap bumps.** `BUMP_H` = 0.5 mm is an unprinted guess. Tune it after the first cap.
 - **Dovetail clearance.** 0.2 mm per side was too tight to slide together (the support-side surfaces are rougher than the rest). It's now 0.4 mm (`DT_CLEAR`, in mm).
+- **Pole thread clearance.** The first print used the exact 3/4"-5 ACME spec, and the broom handle wouldn't catch even half a turn. Heating the hole with a heat gun let it thread in most of the way. It's now opened up 0.4 mm per side (`pole_thread_clear`). That gives a crest of 15.76 mm and a root of 20.64 mm, versus 14.96 / 19.84 at spec.
 
 ## How the model is built
 
