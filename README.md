@@ -89,7 +89,7 @@ Settings I used: 0.3 mm layers. The black lips and translucent faces are both 1.
 - **Cap clearance.** 0.2 mm per side was too loose on an early K test print, so it's now 0.1 mm. If 0.1 is too tight, change `CLEAR` in `wook_build.py` to 0.015 (cm, so 0.15 mm).
 - **Snap bumps.** `BUMP_H` = 0.5 mm is an unprinted guess. Tune it after the first cap.
 - **Dovetail clearance.** 0.2 mm per side was too tight to slide together (the support-side surfaces are rougher than the rest). It's now 0.4 mm (`DT_CLEAR`, in mm).
-- **Pole thread clearance.** The first print used the exact 3/4"-5 ACME spec, and the broom handle wouldn't catch even half a turn. Heating the hole with a heat gun let it thread in most of the way. It's now opened up 0.4 mm per side (`pole_thread_clear`). That gives a crest of 15.76 mm and a root of 20.64 mm, versus 14.96 / 19.84 at spec.
+- **Pole thread clearance.** The first print used the exact 3/4"-5 ACME spec, and the broom handle wouldn't catch even half a turn. Heating the hole with a heat gun let it thread in most of the way. It's now opened up 0.4 mm per side (`pole_thread_clear`). That gives a crest of 15.76 mm and a root of 20.64 mm, versus 14.96 / 19.84 at spec. A test print of the collar at 0.4 mm fit a real broom handle nearly perfectly, so 0.4 mm is confirmed.
 
 ## How the model is built
 
